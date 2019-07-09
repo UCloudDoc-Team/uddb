@@ -1,0 +1,12 @@
+# 分布式数据库 UDDB
+
+{{indexmenu_n>60}}
+
+UCloud 分布式数据库（UCloud Distributed
+Database，简称UDDB）是基于公有云构建的新一代分布式数据库，为用户提供稳定、可靠、容量和服务能力可弹性伸缩的关系型数据库服务。UDDB
+高度兼容 MYSQL 协议和语法，支持自动化水平拆分，在线平滑扩缩容，服务能力线性扩展，透明读写分离，OLTP 和 OLAP 融合支持，
+具备数据库全生命周期运维管控能力。
+
+**目录：**
+
+{{indexmenu>:database:uddb#1 | skipfile=/^(database:uddb:concepts)$/ nsort dsort msort}}

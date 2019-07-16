@@ -1,11 +1,21 @@
 {{indexmenu_n>71}}
 
 ## List+hash分区
-
-\`\`\` create table t (uid int not null , name varchar(128), class int
-not null ) UPARTITION BY LIST(class) USUBPARTITION BY HASH(uid)
-USUBPARTITIONS 4 ( UPARTITION p1 VALUES IN (1), UPARTITION p2 VALUES IN
-(2), UPARTITION p3 VALUES IN (3) ); \`\`\`
+```
+create table t
+(uid  int not null ,
+name  varchar(128),
+class int not null
+)
+UPARTITION BY LIST(class)
+USUBPARTITION BY HASH(uid)
+USUBPARTITIONS 4
+(
+UPARTITION p1 VALUES IN  (1),
+UPARTITION p2 VALUES IN  (2),
+UPARTITION p3 VALUES IN  (3)
+);
+```
 
 该语句利用两个字段（price+id）来对t表做组合分区。首先利用class字段将表切分为3个分区:
 

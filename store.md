@@ -14,20 +14,25 @@
 
 ![image](/images/uddb03.png)
 
-该特定建表语句如下： \`\`\` CREATE TABLE \`accounts\` ( \`id\` int(11)
-AUTO\_INCREMENT NOT NULL, \`name\` varchar(128) NOT NULL ) UPARTITION BY
-LIST(mod100(id))( UPARTITION p1 VALUES
-IN(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
-subpartition in udb, UPARTITION p1 VALUES
-IN(25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,56,47,48,49)
-subpartition in udb, UPARTITION p1 VALUES
-IN(50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74)
-subpartition in udb, UPARTITION P2 VALUES
-IN(75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,
-99) subpartition in udb); \`\`\`
-
-3.业务在发往UDDB的Call procedure语句语句前增加hint，如： \`\`\` /\*id=1001\*/call
-proc\_1st(1001, 'helloworld'); \`\`\` 其中，id为分区字段， 1001为call
+该特定建表语句如下：
+```
+CREATE TABLE `accounts` (
+`id` int(11) AUTO_INCREMENT NOT NULL,
+`name` varchar(128) NOT NULL
+) UPARTITION BY LIST(mod100(id))(
+UPARTITION p1 VALUES IN(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24) subpartition in udb,
+UPARTITION p1 VALUES IN(25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,56,47,48,49) subpartition in udb,
+UPARTITION p1 VALUES IN(50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74) subpartition in udb,
+UPARTITION P2 VALUES IN(75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98, 99) subpartition in udb);
+```
+3.业务在发往UDDB的Call procedure语句语句前增加hint，如：
+```
+/*id=1001*/call proc_1st(1001, 'helloworld');
+```
+其中，id为分区字段， 1001为call
 procedure语句参数中，该字段对应的取值。如果call procedure参数中没有带分区字段，则call
-procedure可以写成： \`\`\` /\*id=all\*/call proc\_2nd('helloworld'); \`\`\`
+procedure可以写成： 
+```
+/*id=all*/call proc_2nd('helloworld');
+```
 该call procedure将被UDDB路由节点广播到各存储节点，然后聚合存储节点返回结果返回给业务端。

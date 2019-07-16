@@ -16,9 +16,12 @@
 提供四种配置： 1. 主节点： 读请求只下发给存储节点， 只读实例不下发任何请求； 2. 节点均衡： 读请求均匀分发给存储节点和只读实例； 3.
 只读节点均衡： 读请求均匀分发给所有只读实例，但不分发给存储节点； 4. 自定义： 客户自定义读请求的分发比例。
 
-UDDB还支持SQL前面加hint的方式，将某条SQL指定路由到存储节点或者只读实例： \`\`\`
-/\*force\_slave\*/select \* from t where id=23; \`\`\`
+UDDB还支持SQL前面加hint的方式，将某条SQL指定路由到存储节点或者只读实例：
+```
+/*force_slave*/select * from t where id=23;
+```
 force\_slave将该Select语句指定路由到只读实例，如果无只读实例，则路由到存储节点。
-
-\`\`\` /\*force\_master\*/select \* from t where id=23; \`\`\`
+```
+/*force_master*/select * from t where id=23;
+```
 force\_master将该Select语句指定路由到存储节点。

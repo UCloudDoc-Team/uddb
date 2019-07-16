@@ -2,9 +2,9 @@
 
 ## USE / SET
 
-1\. UDDB 支持use database；
+1. UDDB 支持use database；
 
-2\. UDDB目前只支持以下set语句：
+2. UDDB目前只支持以下set语句：
 
 2.1 set names utf8;
 

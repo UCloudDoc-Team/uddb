@@ -18,38 +18,41 @@ UDDB的explain主要解释select、insert、replace、delete、update语句，�
 
 ## 使用举例
 
-以经典的用户表、订单表、商品表 三表 join 为例： \`\`\` CREATE TABLE \`t\_user\` (
+以经典的用户表、订单表、商品表 三表 join 为例： 
+```
+CREATE TABLE `t_user` (
+  `uid` int(11) DEFAULT NULL,
+  `uname` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+UPARTITION BY HASH(uid)
+UPARTITIONS 4;  
 
-    `uid` int(11) DEFAULT NULL,
-    `uname` varchar(128) DEFAULT NULL
+CREATE TABLE `t_order` (
+  `oid` int(11) DEFAULT NULL,
+  `oname` varchar(128) DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+UPARTITION BY range(oid)
+(
+UPARTITION p1 values less than (100),
+UPARTITION p2 values less than (1000),
+UPARTITION p3 values less than maxvalue
+);
 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 UPARTITION BY HASH(uid)
+CREATE TABLE `t_product` (
+  `pid` int(11) DEFAULT NULL,
+  `pname` varchar(128) DEFAULT NULL,
+  `price` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+UPARTITION BY HASH(pid)
 UPARTITIONS 4;
-
-CREATE TABLE \`t\_order\` (
-
-    `oid` int(11) DEFAULT NULL,
-    `oname` varchar(128) DEFAULT NULL,
-    `create_time` int(11) DEFAULT NULL
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 UPARTITION BY range(oid) (
-UPARTITION p1 values less than (100), UPARTITION p2 values less than
-(1000), UPARTITION p3 values less than maxvalue );
-
-CREATE TABLE \`t\_product\` (
-
-    `pid` int(11) DEFAULT NULL,
-    `pname` varchar(128) DEFAULT NULL,
-    `price` double DEFAULT NULL
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 UPARTITION BY HASH(pid)
-UPARTITIONS 4; \`\`\`
-
+```
 ## 多表跨分片复杂join
 
-SQL语句： \`\`\` select \* from t\_user join t\_order on t\_user.uid =
-t\_order.oid join t\_product on t\_order.oname=t\_product.pname; \`\`\`
-
+SQL语句： 
+```
+select * from t_user join t_order on t_user.uid = t_order.oid join t_product on t_order.oname=t_product.pname;
+```
 a) 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
@@ -60,33 +63,34 @@ a) 中间件层explain
 
 ![image](/images/compatible/uddbexplain02.png)
 
-1、执行计划从最小node\_id开始执行，SelectNode-1算子中的表t\\\_user是驱动表先执行，获得SelectNode-1算子的结果
+1、执行计划从最小node_id开始执行，SelectNode-1算子中的表t_user是驱动表先执行，获得SelectNode-1算子的结果
 
 2、SelectNode-2算子的执行依赖于SelectNode-1的结果，将SelectNode-1的结果以where条件的形式放到SelectNode-2算子的sql语句中，重写SQL语句后在执行，获得SelectNode-2算子的结果
 
-3、在JoinNode-3算子中对SelectNode-1的结果和SelectNode-2的结果进行等值连接计算，得到表t\\\_user和t\\\_order连接的中间结果
+3、在JoinNode-3算子中对SelectNode-1的结果和SelectNode-2的结果进行等值连接计算，得到表t_user和t_order连接的中间结果
 
 4、SelectNode-4算子的执行依赖JoinNode-3的结果，将JoinNode-3的结果以where条件的形式放到SelectNode-4算子的sql语句中，重写SQL语句后在执行，获得SelectNode-4算子的结果
 
-5、在JoinNode-5算子中对JoinNode-3的结果和SelectNode-4的结果进行等值连接计算，得到t\\\_user、t\\\_order和t\\\_product
+5、在JoinNode-5算子中对JoinNode-3的结果和SelectNode-4的结果进行等值连接计算，得到t_user、t_order和t_product
 3表连接的结果
 
 b) 存储节点explain
 
-取出uexplain结果中SelectNode-1算子的sql语句。加上explain关键字，将sql语句中的表名t\\\_user替换为子表名，生成4条新的子sql如下所示：
-\`\`\` explain select t\_user.uid , t\_user.uname from t\_user\_0000 as
-t\_user order by t\_user.uid asc; explain select t\_user.uid ,
-t\_user.uname from t\_user\_0001 as t\_user order by t\_user.uid asc;
-explain select t\_user.uid , t\_user.uname from t\_user\_0002 as t\_user
-order by t\_user.uid asc; explain select t\_user.uid , t\_user.uname
-from t\_user\_0003 as t\_user order by t\_user.uid asc; \`\`\`
+取出uexplain结果中SelectNode-1算子的sql语句。加上explain关键字，将sql语句中的表名t_user替换为子表名，生成4条新的子sql如下所示：
+```
+explain select t_user.uid , t_user.uname from t_user_0000 as t_user order by t_user.uid asc;
+explain select t_user.uid , t_user.uname from t_user_0001 as t_user order by t_user.uid asc;
+explain select t_user.uid , t_user.uname from t_user_0002 as t_user order by t_user.uid asc;
+explain select t_user.uid , t_user.uname from t_user_0003 as t_user order by t_user.uid asc;
+```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
 ![image](/images/compatible/多表跨分片复杂join_b\).png)
 
 uexplain结果每列的说明如下：
 
-**node\_id** 在整个执行计划中唯一的标识一个算子节点,由两部分组成：操作类型+序号。
+**node_id** 
+在整个执行计划中唯一的标识一个算子节点,由两部分组成：操作类型+序号。
 
 算子类型
 
@@ -115,11 +119,15 @@ UnionNode：将两个结果集做并集计算的算子
 **operator\_info** 当前算子需要在中间件层执行的操作信息（如merge result、join、union、group
 by、order by、limit等）
 
-**hint** SQL语句中的隐含信息，如/\\\*force\\\_master\\\*/指定只读主节点
+**hint** SQL语句中的隐含信息，如\*force_master\*指定只读主节点
 
 ## 单表查询
 
-SQL语句: \`\`\` select \* from t\_user order by uid; \`\`\` a) 中间件层explain
+SQL语句: 
+```
+select * from t_user order by uid;
+```
+a) 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
@@ -129,18 +137,24 @@ SQL语句: \`\`\` select \* from t\_user order by uid; \`\`\` a) 中间件层exp
 
 b) 存储节点explain
 
-取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t\\\_user替换为子表名生成4条新的子sql如下所示：
-\`\`\` explain select \* from t\_user\_0000 as t\_user order by uid;
-explain select \* from t\_user\_0001 as t\_user order by uid; explain
-select \* from t\_user\_0002 as t\_user order by uid; explain select \*
-from t\_user\_0003 as t\_user order by uid; \`\`\`
+取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t_user替换为子表名生成4条新的子sql如下所示：
+```
+explain select * from t_user_0000 as t_user order by uid;
+explain select * from t_user_0001 as t_user order by uid;
+explain select * from t_user_0002 as t_user order by uid;
+explain select * from t_user_0003 as t_user order by uid;
+```
+
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
 ![image](/images/compatible/单表查询b\).png)
 
 ## 分片规则一致的多表join
 
-SQL语句： \`\`\` select \* from t\_user,t\_product where uid=pid; \`\`\` a)
+SQL语句： 
+```
+select * from t_user,t_product where uid=pid;
+```
 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
@@ -152,12 +166,12 @@ SQL语句： \`\`\` select \* from t\_user,t\_product where uid=pid; \`\`\` a)
 b) 存储节点explain
 
 取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t\\\_user替换为子表名，表名t\\\_product替换为和t\\\_user相同后缀的子表名，生成4条新的子sql如下所示：
-\`\`\` explain select \* from t\_user\_0000 as t\_user, t\_product\_0000
-as t\_product where uid=pid; explain select \* from t\_user\_0001 as
-t\_user, t\_product\_0001 as t\_product where uid=pid; explain select \*
-from t\_user\_0002 as t\_user, t\_product\_0002 as t\_product where
-uid=pid; explain select \* from t\_user\_0003 as t\_user,
-t\_product\_0003 as t\_product where uid=pid; \`\`\`
+```
+explain select * from t_user_0000 as t_user, t_product_0000 as t_product where uid=pid;
+explain select * from t_user_0001 as t_user, t_product_0001 as t_product where uid=pid;
+explain select * from t_user_0002 as t_user, t_product_0002 as t_product where uid=pid;
+explain select * from t_user_0003 as t_user, t_product_0003 as t_product where uid=pid;
+```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
 ![image](/images/compatible/分片规则一致的多表join_b\).png)

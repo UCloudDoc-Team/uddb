@@ -135,7 +135,10 @@ restart udb_import_task last(
 
 以下是我们推荐的在线业务数据迁移和业务切换流程：
 
-1.在UDDB中，创建需要迁移的数据库和表
-2.执行create udb_import_task语句， 开启数据迁移和同步进程， 从源数据库迁移数据
+1.在UDDB中，创建需要迁移的数据库和表。
+
+2.执行create udb_import_task语句， 开启数据迁移和同步进程， 从源数据库迁移数据。
+
 3.每隔若干秒， 通过show udb_import_task查看迁移和同步进度， 如果每次查询的结果， 是no_data_num的值， 接近total_sync_num的值，那么说明UDDB的数据，已经接近追平源数据库的数据。 此时可以将暂停业务写入源数据库。
+
 4.暂停业务写入源数据库后， 通过在源数据库show master status，获取源数据库最新binlog地址，通过show udb_import_task，获取UDDB最新的binglog地址。如果两者相同，则说明UDDB和源数据库一致，此时可以将业务切换到UDDB进行写入。

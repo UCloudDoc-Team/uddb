@@ -35,5 +35,6 @@ CREATE TABLE `t` (
     `uid` int(11) NOT NULL,
     `dt` date DEFAULT NULL
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 on udb node 'udb-162';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 
+on udb node 'udb-162';
 ```

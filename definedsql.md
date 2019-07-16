@@ -123,7 +123,7 @@ mysql> show udb processlist 'udb-162qwe';
 ```
 **Kill存储节点会话** 格式：
 ```
-kill 'udb-162qwe\#1089233'; 
+kill 'udb-162qwe#1089233'; 
 ```
 其作用是Kill存储节点（id为udb-162qwe）上的编号为1089233的会话。
 udb-162qwe#1089233 可通过上面的 `show udb processlist 'udb-162qwe'` 查出。

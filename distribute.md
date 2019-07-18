@@ -35,8 +35,8 @@ set session xa_level=[1|2|3|4]
 ```
 
 来配置UDDB分布式事务的级别。其中set session
-xa_level只影响当前连接的xa_level，而set global
-影响UDDB全局的xa_level。在set
+xa\_level只影响当前连接的xa\_level，而set global
+影响UDDB全局的xa\_level。在set
 global后，用户和UDDB间新建的连接，将采用新的分布式事务级别。
 
 UDDB默认的分布式事务级别是3（ALL\_TABLE\_XA\_AT\_AUTO_COMMIT）。可以通过show

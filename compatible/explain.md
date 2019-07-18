@@ -77,6 +77,7 @@ a) 中间件层explain
 b) 存储节点explain
 
 取出uexplain结果中SelectNode-1算子的sql语句。加上explain关键字，将sql语句中的表名t_user替换为子表名，生成4条新的子sql如下所示：
+
 ```
 explain select t_user.uid , t_user.uname from t_user_0000 as t_user order by t_user.uid asc;
 explain select t_user.uid , t_user.uname from t_user_0001 as t_user order by t_user.uid asc;
@@ -147,12 +148,13 @@ explain select * from t_user_0003 as t_user order by uid;
 
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/单表查询b.png)
+![image](/images/compatible/单表查询b_.png)
 
 
 ## 分片规则一致的多表join
 
 SQL语句： 
+
 ```
 select * from t_user,t_product where uid=pid;
 ```

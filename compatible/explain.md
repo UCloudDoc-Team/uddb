@@ -57,7 +57,7 @@ a) 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
-![image](/images/compatible/多表跨分片复杂join\_a.png)
+![image](/images/compatible/多表跨分片复杂join_a_.png)
 
 该语句的查询执行计划是由JoinNode算子和SelectNode算子构成的二叉树，其结构如下图所示：
 
@@ -85,7 +85,7 @@ explain select t_user.uid , t_user.uname from t_user_0003 as t_user order by t_u
 ```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/多表跨分片复杂join_b.png)
+![image](/images/compatible/多表跨分片复杂join_b_.png)
 
 uexplain结果每列的说明如下：
 
@@ -160,7 +160,7 @@ select * from t_user,t_product where uid=pid;
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
-![image](/images/compatible/分片规则一致的多表join_a.png)
+![image](/images/compatible/分片规则一致的多表join_a_.png)
 
 两表的分片规则一致，在中间件层只生产一个SelectNode算子。
 
@@ -175,7 +175,7 @@ explain select * from t_user_0003 as t_user, t_product_0003 as t_product where u
 ```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/分片规则一致的多表join_b.png)
+![image](/images/compatible/分片规则一致的多表join_b_.png)
 
 
 ## 使用限制

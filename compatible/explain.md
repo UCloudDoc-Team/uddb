@@ -57,7 +57,7 @@ a) 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
-![image](/images/compatible/多表跨分片复杂join_a.png)
+![image](/images/compatible/多表跨分片复杂join\_a.png)
 
 该语句的查询执行计划是由JoinNode算子和SelectNode算子构成的二叉树，其结构如下图所示：
 

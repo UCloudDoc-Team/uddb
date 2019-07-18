@@ -63,7 +63,7 @@ a) 中间件层explain
 
 ![image](/images/compatible/uddbexplain02.png)
 
-1、执行计划从最小node_id开始执行，SelectNode-1算子中的表t_user是驱动表先执行，获得SelectNode-1算子的结果
+1、执行计划从最小node\_id开始执行，SelectNode-1算子中的表t\_user是驱动表先执行，获得SelectNode-1算子的结果
 
 2、SelectNode-2算子的执行依赖于SelectNode-1的结果，将SelectNode-1的结果以where条件的形式放到SelectNode-2算子的sql语句中，重写SQL语句后在执行，获得SelectNode-2算子的结果
 
@@ -76,7 +76,7 @@ a) 中间件层explain
 
 b) 存储节点explain
 
-取出uexplain结果中SelectNode-1算子的sql语句。加上explain关键字，将sql语句中的表名t_user替换为子表名，生成4条新的子sql如下所示：
+取出uexplain结果中SelectNode-1算子的sql语句。加上explain关键字，将sql语句中的表名t\_user替换为子表名，生成4条新的子sql如下所示：
 
 ```
 explain select t_user.uid , t_user.uname from t_user_0000 as t_user order by t_user.uid asc;
@@ -84,43 +84,49 @@ explain select t_user.uid , t_user.uname from t_user_0001 as t_user order by t_u
 explain select t_user.uid , t_user.uname from t_user_0002 as t_user order by t_user.uid asc;
 explain select t_user.uid , t_user.uname from t_user_0003 as t_user order by t_user.uid asc;
 ```
+
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
+
 ![image](/images/compatible/多表跨分片复杂join_b_.png)
+
 
 uexplain结果每列的说明如下：
 
 **node_id** 
+
 在整个执行计划中唯一的标识一个算子节点,由两部分组成：操作类型+序号。
 
-算子类型
 
-SelectNode：代表简单select语句（无表）、单表select语句和分片规则一致的多表select语句,如果是子查询则需要标识出子查询类型
+**算子类型**
 
-DmlNode：代表insert/replace/update/delete语句，并标识出dml类型
+SelectNode：代表简单select语句（无表）、单表select语句和分片规则一致的多表select语句,如果是子查询则需要标识出子查询类型。
 
-JoinNode：将两个结果集做连接计算的算子
+DmlNode：代表insert/replace/update/delete语句，并标识出dml类型。
 
-UnionNode：将两个结果集做并集计算的算子
+JoinNode：将两个结果集做连接计算的算子。
+
+UnionNode：将两个结果集做并集计算的算子。
 
 序号是创建执行计划时生成的，序号越小算子越先执行。
 
-**table** 当前算子涉及到的表名，需标识出驱动表
 
-**upartition\_type** 表的分区类型
+**table** 当前算子涉及到的表名，需标识出驱动表。
 
-**subtables** 分区表的子表名
+**upartition\_type** 表的分区类型。
 
-**parent** 当前算子的父节点，每个算子的parent有且仅有一个
+**subtables** 分区表的子表名。
 
-**children** 当前算子的子节点，也即这个算子的数据来源
+**parent** 当前算子的父节点，每个算子的parent有且仅有一个。
 
-**sql** 算子下发至存储节点的SQL语句，这里显示的并非真正下发的SQL语句，在执行时会将表名替换为子表名
+**children** 当前算子的子节点，也即这个算子的数据来源。
 
-**operator\_info** 当前算子需要在中间件层执行的操作信息（如merge result、join、union、group
-by、order by、limit等）
+**sql** 算子下发至存储节点的SQL语句，这里显示的并非真正下发的SQL语句，在执行时会将表名替换为子表名。
 
-**hint** SQL语句中的隐含信息，如\*force_master\*指定只读主节点
+**operator\_info** 当前算子需要在中间件层执行的操作信息（如merge result、join、union、group by、order by、limit等）。
+
+**hint** SQL语句中的隐含信息，如\*force_master\*指定只读主节点。
+
 
 ## 单表查询
 
@@ -138,7 +144,8 @@ a) 中间件层explain
 
 b) 存储节点explain
 
-取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t_user替换为子表名生成4条新的子sql如下所示：
+取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t\_user替换为子表名生成4条新的子sql如下所示：
+
 ```
 explain select * from t_user_0000 as t_user order by uid;
 explain select * from t_user_0001 as t_user order by uid;

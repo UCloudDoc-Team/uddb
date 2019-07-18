@@ -57,7 +57,7 @@ a) 中间件层explain
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
-![image](/images/compatible/多表跨分片复杂join_a\).png)
+![image](/images/compatible/多表跨分片复杂join_a.png)
 
 该语句的查询执行计划是由JoinNode算子和SelectNode算子构成的二叉树，其结构如下图所示：
 
@@ -85,7 +85,7 @@ explain select t_user.uid , t_user.uname from t_user_0003 as t_user order by t_u
 ```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/多表跨分片复杂join_b\).png)
+![image](/images/compatible/多表跨分片复杂join_b.png)
 
 uexplain结果每列的说明如下：
 
@@ -147,7 +147,8 @@ explain select * from t_user_0003 as t_user order by uid;
 
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/单表查询b\).png)
+![image](/images/compatible/单表查询b.png)
+
 
 ## 分片规则一致的多表join
 
@@ -159,13 +160,13 @@ select * from t_user,t_product where uid=pid;
 
 在SQL语句前面加uexplain关键字，到Uddb执行即可得到执行计划，如下图所示：
 
-![image](/images/compatible/分片规则一致的多表join_a\).png)
+![image](/images/compatible/分片规则一致的多表join_a.png)
 
 两表的分片规则一致，在中间件层只生产一个SelectNode算子。
 
 b) 存储节点explain
 
-取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t\\\_user替换为子表名，表名t\\\_product替换为和t\\\_user相同后缀的子表名，生成4条新的子sql如下所示：
+取出uexplain结果中的sql语句，加上explain关键字，将sql语句中的表名t_user替换为子表名，表名t_product替换为和t_user相同后缀的子表名，生成4条新的子sql如下所示：
 ```
 explain select * from t_user_0000 as t_user, t_product_0000 as t_product where uid=pid;
 explain select * from t_user_0001 as t_user, t_product_0001 as t_product where uid=pid;
@@ -174,7 +175,8 @@ explain select * from t_user_0003 as t_user, t_product_0003 as t_product where u
 ```
 分别下发到存储节点执行，在中间件层对每条子sql的结果进行合并，即可得到该语句在存储节点的执行计划。结果如下所示：
 
-![image](/images/compatible/分片规则一致的多表join_b\).png)
+![image](/images/compatible/分片规则一致的多表join_b.png)
+
 
 ## 使用限制
 

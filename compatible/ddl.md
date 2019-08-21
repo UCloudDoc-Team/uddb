@@ -32,7 +32,7 @@ UDDB 兼容大部分 MySQL alter table 语法，如：
 
 增加字段：
 
-``` alter table t add column real\_name varchar(32) not null comment '真实姓名'; ```
+``` alter table t add column real_name varchar(32) not null comment '真实姓名'; ```
 
 修改字段/增加索引：
 ```

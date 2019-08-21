@@ -142,7 +142,8 @@ ddl执行信息保存到ddl\_details表中，可通过show ddl\_details命令查
 
 #### 到指定的节点执行失败的ddl语句
 
-根据show ddl\_details的结果，将/\*udbid=XXX*/作为hint信息放到执行失败的ddl语句中到存储节点执行，如：
+根据show ddl\_details的结果，将/\*udbid=XXX\*/作为hint信息放到执行失败的ddl语句中到存储节点执行，如：
+
 ```
 /*udbid=XXX */ create table t1_0000(id int);
 ```

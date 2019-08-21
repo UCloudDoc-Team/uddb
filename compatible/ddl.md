@@ -116,7 +116,7 @@ ddl执行信息保存到ddl\_details表中，可通过show ddl\_details命令查
 | --- | --- |
 | udb\_id | Udb节点名称 |
 | sql | 到该udb节点执行的SQL语句 |
-| msg_type | sql执行结果信息的类型（error、ok） |
+| msg\_type | sql执行结果信息的类型（error、ok） |
 | message | 执行结果的详细信息 |
 
 #### 重试

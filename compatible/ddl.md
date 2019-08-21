@@ -111,25 +111,12 @@ uddb提供重试和回滚机制，对不同的ddl语句，使用的机制也不�
 #### 执行结果记录
 ddl执行信息保存到ddl_details表中，可通过show ddl_details命令查看，show ddl_details [where expr];显示当前session的ddl语句执行结果的详细信息。Where条件可以筛选出满足特定条件的结果。表的列名描述如下：
 
-列名
-
-说明
-
-udb_id
-
-Udb节点名称
-
-sql
-
-到该udb节点执行的SQL语句
-
-msg_type
-
-sql执行结果信息的类型（error、ok）
-
-message
-
-执行结果的详细信息
+| 列名 | 说明 |
+| --- | --- |
+| udb_id  | Udb节点名称 |
+| sql  | 到该udb节点执行的SQL语句 |
+| msg_type  | sql执行结果信息的类型（error、ok） |
+| message  | 执行结果的详细信息 |
 
 #### 重试
 根据show ddl_details的结果，将/*retry*/作为hint信息放到执行失败的原ddl语句中，如：

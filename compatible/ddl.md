@@ -110,7 +110,7 @@ uddb提供重试和回滚机制，对不同的ddl语句，使用的机制也不�
 
 #### 执行结果记录
 
-ddl执行信息保存到ddl_details表中，可通过show ddl_details命令查看，show ddl_details [where expr];显示当前session的ddl语句执行结果的详细信息。Where条件可以筛选出满足特定条件的结果。表的列名描述如下：
+ddl执行信息保存到`ddl_details`表中，可通过`show ddl_details`命令查看，`show ddl_details [where expr]`;显示当前session的ddl语句执行结果的详细信息。Where条件可以筛选出满足特定条件的结果。表的列名描述如下：
 
 | 列名 | 说明 |
 | --- | --- |
@@ -121,16 +121,18 @@ ddl执行信息保存到ddl_details表中，可通过show ddl_details命令查�
 
 #### 重试
 
-根据show ddl_details的结果，将`/*retry*/`作为hint信息放到执行失败的原ddl语句中，如：
+根据`show ddl_details`的结果，将`/*retry*/`作为hint信息放到执行失败的原ddl语句中，如：
+
 ```
 /*retry*/ create table t1(id int)upartition by hash(id)upartitions 4;
 ```
+
 可反复执行，直到执行成功。使用show ddl_details查看最后的执行结果。
 
 #### 构造反向语句回滚
 根据show ddl_details的结果，构造反向语句，加`/*cancel*/hint`信息执行，如：`/*cancel*/ drop table t1`;
 
-将执行成功的节点的ddl语句回滚掉，然后执行show ddl_details 查看执行结果。反向语句回滚只能执行一次，原因是当元数据删除后，不能找到分片信息，不能构造下发存储节点的子语句。
+将执行成功的节点的ddl语句回滚掉，然后执行`show ddl_details` 查看执行结果。反向语句回滚只能执行一次，原因是当元数据删除后，不能找到分片信息，不能构造下发存储节点的子语句。
 
 | 原语句 | 反向语句 |
 | --- | --- |

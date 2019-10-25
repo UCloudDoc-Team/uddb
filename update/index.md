@@ -1,7 +1,7 @@
-{{indexmenu_n>103}}
+
 
 ## 实例扩缩容
 
 UDDB实例的各子系统（路由节点、分析节点、存储节点）扩缩容都可以自动化进行，期间不停服，对业务影响小。
 
-{{indexmenu>:database:uddb:updata#2 | nsort dsort msort}}
+

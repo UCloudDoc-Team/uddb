@@ -1,4 +1,4 @@
-{{indexmenu_n>70}}
+
 
 ## Range+hash分区
 ```

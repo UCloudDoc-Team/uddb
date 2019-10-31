@@ -10,7 +10,7 @@
 支持where和from子句中包含嵌套子查询的select；
 
 3.分片规则一致的多表join。完整支持分片规则一致的多张表的join select，并支持group by、order by以及聚合函数，
-以及嵌套子查询；同时支持分片规则一致的多张表和广播表的join（广播表含义见[广播表](/database/uddb/broadcast/)一节）。
+以及嵌套子查询；同时支持分片规则一致的多张表和广播表的join（广播表含义见[广播表](/database/uddb/broadcast)一节）。
 
 4.分片规则不一致的多表join。支持分片规则不一致的多表join，并支持group by、order by以及聚合函数，但暂不支持：
 

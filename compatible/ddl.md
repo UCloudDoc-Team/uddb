@@ -68,7 +68,7 @@ create unique index idx_id_create_time on t(id,create_time);
 ```
 ###  create user/grant/revoke
 
-UDDB兼容MySQL的用户权限管理功能。详见：[用户权限管理](/database/uddb/user)章节。
+UDDB兼容MySQL的用户权限管理功能。详见：[用户权限管理](uddb/user)章节。
 
 ###  truncate table
 

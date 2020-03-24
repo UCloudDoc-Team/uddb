@@ -1,6 +1,6 @@
-<div class="sidebar_title icon__uddb"> 分布式数据库 UDDB</div>
+# 概览
 
-* [概览](/uddb/README) 
+
 * 产品概要
     * [什么是分布式数据库UDDB](/uddb/concepts/concepts)
     * [单机MySQL面临的挑战](/uddb/concepts/chanllenge)

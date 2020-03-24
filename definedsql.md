@@ -128,6 +128,6 @@ kill 'udb-162qwe#1089233';
 其作用是Kill存储节点（id为udb-162qwe）上的编号为1089233的会话。
 udb-162qwe#1089233 可通过上面的 `show udb processlist 'udb-162qwe'` 查出。
 
-**数据同步的自定义SQL** 详见 [数据同步](/database/uddb/sync)章节。
+**数据同步的自定义SQL** 详见 [数据同步](uddb/sync)章节。
 
-**实例扩缩容相关的自定义SQL** 详见 [实例扩缩容](/database/uddb/update/index) 章节。
+**实例扩缩容相关的自定义SQL** 详见 [实例扩缩容](uddb/update/index) 章节。

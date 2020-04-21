@@ -47,7 +47,4 @@
     * [路由节点扩缩容](/uddb/update/route)
     * [分析节点扩缩容](/uddb/update/analyse)
     * [存储节点在线扩缩容](/uddb/update/ndb)
-* [产品价格](/uddb/price)
-    
-    
-        
+* [产品价格](/uddb/price)    

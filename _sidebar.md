@@ -1,4 +1,3 @@
-<div class="sidebar_title icon__uddb"> 分布式数据库 UDDB</div>
 
 * [概览](/uddb/README) 
 * 产品概要

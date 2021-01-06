@@ -2,7 +2,7 @@
 
 
 * 产品概要
-    * [什么是分布式数据库UDDB](/uddb/concepts/concepts)
+    * [什么是分布式数据库UDDB.](/uddb/concepts/concepts)
     * [单机MySQL面临的挑战](/uddb/concepts/chanllenge)
     * [数据库中间件的问题](/uddb/concepts/middle)
     * [UDDB的解决方案](/uddb/concepts/method)

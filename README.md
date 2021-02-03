@@ -1,6 +1,5 @@
 # 概览
 
-
 * 产品概要
     * [什么是分布式数据库UDDB](/uddb/concepts/concepts)
     * [单机MySQL面临的挑战](/uddb/concepts/chanllenge)
